@@ -4,6 +4,8 @@ export * from './types/pagination';
 export * from './types/api-response';
 export * from './types/auth';
 export * from './types/tutor-profile';
+export * from './types/tutor-application';
+export * from './types/tutor-application-api';
 
 // Constants
 export * from './constants/routes';

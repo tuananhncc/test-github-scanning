@@ -1,0 +1,255 @@
+import { useTranslations } from 'next-intl'
+import { useTheme } from 'tamagui'
+import { useMemo, useState } from 'react'
+import { AppButton, Card, Text, Textarea, XStack, YStack } from '@mezon-tutors/app/ui'
+import { DocumentIcon } from '@mezon-tutors/app/ui/icons/DocumentIcon'
+import type { TutorApplication } from './types'
+import { VerifiedIcon } from '@mezon-tutors/app/ui/icons'
+
+export type TutorApplicationDetailProps = {
+  application: TutorApplication | null
+  onApprove: (id: string, feedback?: string) => void
+  onReject: (id: string, feedback?: string) => void
+}
+
+export function TutorApplicationDetail({
+  application,
+  onApprove,
+  onReject,
+}: TutorApplicationDetailProps) {
+  const t = useTranslations('Admin.TutorApplications')
+  const theme = useTheme()
+  const primaryColor = theme.appPrimary?.val
+  const borderColor = theme.borderColor?.val
+  const [feedback, setFeedback] = useState('')
+
+  const youtubeEmbedUrl = useMemo(() => {
+    const videoUrl = application?.videoUrl
+    if (!videoUrl) return null
+
+    try {
+      const url = new URL(videoUrl)
+      const host = url.hostname.toLowerCase()
+
+      if (host.includes('youtube.com')) {
+        const videoId = url.searchParams.get('v')
+        if (videoId) {
+          return `https://www.youtube.com/embed/${videoId}`
+        }
+      }
+
+      if (host.includes('youtu.be')) {
+        const videoId = url.pathname.replace('/', '')
+        if (videoId) {
+          return `https://www.youtube.com/embed/${videoId}`
+        }
+      }
+    } catch {
+      return null
+    }
+
+    return null
+  }, [application?.introPreview])
+
+  const openInNewTab = (url: string) => {
+    if (typeof window !== 'undefined') {
+      window.open(url, '_blank', 'noopener,noreferrer')
+    }
+  }
+
+  if (!application) {
+    return (
+      <Card
+        flexBasis={420}
+        flexGrow={1}
+        backgroundColor="$backgroundCard"
+        borderColor={borderColor}
+        padding={20}
+      >
+        <Text style={{ textDecoration: 'none' }}>{t('detail.noSelection')}</Text>
+      </Card>
+    )
+  }
+
+  return (
+    <Card
+      flexBasis={420}
+      flexGrow={1}
+      backgroundColor="$backgroundCard"
+      borderColor={borderColor}
+      padding={0}
+      gap={0}
+      shadowRadius={0}
+      borderRadius={0}
+    >
+      <YStack
+        backgroundColor={primaryColor}
+        borderTopLeftRadius={20}
+        borderTopRightRadius={20}
+        paddingHorizontal={20}
+        paddingTop={16}
+        paddingBottom={12}
+        gap={4}
+      >
+        <Text fontSize={20} fontWeight="700" style={{ textDecoration: 'none' }} color={'#fff'}>
+          {t('detail.title')}
+        </Text>
+        <Text size="sm" color={'#fff'} style={{ textDecoration: 'none' }}>
+          {t('detail.applicationId')}: {application.id}
+        </Text>
+      </YStack>
+
+      <YStack padding={20} gap={16} flex={1}>
+        <XStack flexDirection="row" alignItems="center" gap={12}>
+          <YStack
+            width={40}
+            height={40}
+            borderRadius={999}
+            backgroundColor="$appPrimary"
+            alignItems="center"
+            justifyContent="center"
+          >
+            <Text size="md" fontWeight="700">
+              {application.name.charAt(0)}
+            </Text>
+          </YStack>
+
+          <YStack gap={2}>
+            <Text fontWeight="600" variant="default" fontSize={20}>
+              {application.name}
+            </Text>
+            <Text size="sm" variant="muted" style={{ textDecoration: 'none' }}>
+              <VerifiedIcon size={12} />
+              {t('detail.verifiedBadge')}
+            </Text>
+          </YStack>
+        </XStack>
+
+        <YStack gap={8}>
+          <Text size="sm" fontWeight="600" variant="muted" fontSize={16}>
+            {t('detail.introVideoTitle')}
+          </Text>
+          {youtubeEmbedUrl ? (
+            <YStack
+              borderRadius={16}
+              backgroundColor="$backgroundMuted"
+              borderWidth={1}
+              borderColor="$borderColor"
+              height={300}
+              overflow="hidden"
+            >
+              <iframe
+                src={youtubeEmbedUrl}
+                style={{ width: '100%', height: '100%', border: 'none', display: 'block' }}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+              />
+            </YStack>
+          ) : application.videoUrl ? (
+            <YStack
+              borderRadius={16}
+              backgroundColor="$backgroundMuted"
+              borderWidth={1}
+              borderColor="$borderColor"
+              height={300}
+              overflow="hidden"
+            >
+              <video
+                style={{ width: '100%', height: '100%', display: 'block' }}
+                controls
+                autoPlay
+                src={application.videoUrl}
+              />
+            </YStack>
+          ) : (
+            <Text size="sm" variant="muted">
+              {application.introPreview}
+            </Text>
+          )}
+        </YStack>
+
+        <YStack gap={10}>
+          <Text size="sm" fontWeight="600" variant="muted" fontSize={16}>
+            {t('detail.certificatesTitle')}
+          </Text>
+
+          <XStack gap={8} flexWrap="wrap">
+            {application.certificates.map((cert) => (
+              <XStack
+                key={cert.id}
+                alignItems="center"
+                justifyContent="space-between"
+                paddingVertical={8}
+                paddingHorizontal={10}
+                borderRadius={12}
+                backgroundColor="$backgroundMuted"
+                borderWidth={3}
+                borderColor={borderColor}
+                gap={10}
+                flexBasis="48%"
+              >
+                <XStack alignItems="center" gap={10}>
+                  <DocumentIcon size={22} color={primaryColor} />
+                  <YStack gap={2}>
+                    <Text size="sm" fontWeight="500" variant="default">
+                      {cert.name}
+                    </Text>
+                    <Text size="sm" variant="muted">
+                      {cert.size}
+                    </Text>
+                  </YStack>
+                </XStack>
+                <Text
+                  size="sm"
+                  variant="primary"
+                  style={{ textDecoration: 'none' }}
+                  onPress={() =>
+                    openInNewTab(
+                      cert.url ??
+                        'https://file-examples.com/storage/feff9b7d9e8c2b4a4682b2a/2017/10/file-sample_150kB.pdf'
+                    )
+                  }
+                >
+                  {t('detail.viewDocument')}
+                </Text>
+              </XStack>
+            ))}
+          </XStack>
+        </YStack>
+
+        <YStack gap={8}>
+          <Text size="sm" fontWeight="600" variant="muted" fontSize={16}>
+            {t('detail.reviewFeedbackTitle')}
+          </Text>
+          <Textarea
+            placeholder={t('detail.reviewFeedbackPlaceholder')}
+            multiline
+            textAlignVertical="top"
+            value={feedback}
+            onChangeText={setFeedback}
+          />
+        </YStack>
+
+        <XStack gap={12} justifyContent="flex-end">
+          <AppButton variant="secondary" onPress={() => onReject(application.id, feedback)}>
+            {t('actions.reject')}
+          </AppButton>
+          <AppButton variant="primary" onPress={() => onApprove(application.id, feedback)}>
+            {t('actions.approveTutor')}
+          </AppButton>
+        </XStack>
+      </YStack>
+    </Card>
+  )
+}
+
+function TrianglePlayIcon() {
+  return (
+    <svg width="28" height="32" viewBox="0 0 28 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="M26.25 13.4019C28.25 14.5566 28.25 17.4434 26.25 18.5981L5.25 30.7277C3.25 31.8824 0.75 30.439 0.75 28.1296L0.75 3.87039C0.75 1.561 3.25 0.1176 5.25 1.2723L26.25 13.4019Z"
+        fill="white"
+      />
+    </svg>
+  )
+}
