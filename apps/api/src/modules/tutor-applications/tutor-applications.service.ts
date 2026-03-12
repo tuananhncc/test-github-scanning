@@ -21,7 +21,7 @@ export class TutorApplicationsService {
     return profiles.map(toTutorApplicationApiItem);
   }
 
-  async approve(id: string, body?: { feedback?: string }): Promise<{ success: boolean }> {
+  async approve(id: string): Promise<{ success: boolean }> {
     const profile = await this.prisma.tutorProfile.findUnique({
       where: { id },
       select: { id: true, userId: true },
@@ -34,7 +34,6 @@ export class TutorApplicationsService {
         where: { id },
         data: {
           verificationStatus: VerificationStatus.APPROVED,
-          adminReviewNote: body?.feedback ?? '',
         },
       }),
       this.prisma.user.update({
@@ -45,7 +44,7 @@ export class TutorApplicationsService {
     return { success: true };
   }
 
-  async reject(id: string, body?: { feedback?: string }): Promise<{ success: boolean }> {
+  async reject(id: string): Promise<{ success: boolean }> {
     const profile = await this.prisma.tutorProfile.findUnique({
       where: { id },
     });
@@ -56,7 +55,6 @@ export class TutorApplicationsService {
       where: { id },
       data: {
         verificationStatus: VerificationStatus.REJECTED,
-        adminReviewNote: body?.feedback ?? '',
       },
     });
     return { success: true };

@@ -54,7 +54,6 @@ model TutorProfile {
   totalStudents      Int                @default(0) @map("total_students")
   ratingCount        Int                @default(0) @map("rating_count")
   ratingAverage      Decimal            @default(0) @map("rating_average") @db.Decimal(3, 2)
-  adminReviewNote    String             @default("") @map("admin_review_note")
   timezone           String             @default("UTC")
   createdAt          DateTime           @default(now()) @map("created_at")
   updatedAt          DateTime           @updatedAt @map("updated_at")
