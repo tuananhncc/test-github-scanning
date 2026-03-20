@@ -2243,7 +2243,7 @@ __metadata:
     "@types/uuid": "npm:^9.0.5"
     concurrently: "npm:^8.2.2"
     dotenv: "npm:^16.5.0"
-    dotenv-cli: "npm:^10.0.0"
+    dotenv-cli: "npm:^11.0.0"
     prisma: "npm:^6.2.1"
     rimraf: "npm:^5.0.5"
     scaffdog: "npm:^3.0.0"
@@ -9684,21 +9684,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dotenv-cli@npm:^10.0.0":
-  version: 10.0.0
-  resolution: "dotenv-cli@npm:10.0.0"
+"dotenv-cli@npm:^11.0.0":
+  version: 11.0.0
+  resolution: "dotenv-cli@npm:11.0.0"
   dependencies:
     cross-spawn: "npm:^7.0.6"
     dotenv: "npm:^17.1.0"
-    dotenv-expand: "npm:^11.0.0"
+    dotenv-expand: "npm:^12.0.0"
     minimist: "npm:^1.2.6"
   bin:
     dotenv: cli.js
-  checksum: 10c0/c469e65167fc3d1ef7bc6f90c8b7a0accd245ad1cdb73da8c72b32ddb308550dc4d5bfcdae964ab1f8a247957d756afc7b050d0f88fa5868c05ff6d3dfb4c1ba
+  checksum: 10c0/c3e6e58a484b3204eeb167a8f78c9cb04c4bae951069e7860eccbbbf96964e3bd808b3632dfe841e5d882b2c5d77c447f20abd06edd4db623ce719d94a7fb44e
   languageName: node
   linkType: hard
 
-"dotenv-expand@npm:12.0.3":
+"dotenv-expand@npm:12.0.3, dotenv-expand@npm:^12.0.0":
   version: 12.0.3
   resolution: "dotenv-expand@npm:12.0.3"
   dependencies:
@@ -9707,7 +9707,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dotenv-expand@npm:^11.0.0, dotenv-expand@npm:~11.0.6":
+"dotenv-expand@npm:~11.0.6":
   version: 11.0.7
   resolution: "dotenv-expand@npm:11.0.7"
   dependencies:
