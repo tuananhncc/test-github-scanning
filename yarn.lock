@@ -2210,7 +2210,7 @@ __metadata:
     "@react-navigation/native": "npm:^6.1.17"
     "@tamagui/animations-react-native": "npm:^1.144.2"
     "@tamagui/build": "npm:^1.144.2"
-    "@tamagui/colors": "npm:^1.144.2"
+    "@tamagui/colors": "npm:^1.144.4"
     "@tamagui/font-inter": "npm:^1.144.2"
     "@tamagui/lucide-icons": "npm:^1.144.2"
     "@tamagui/shorthands": "npm:^1.144.2"
@@ -4830,10 +4830,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tamagui/colors@npm:1.144.3, @tamagui/colors@npm:^1.144.2":
+"@tamagui/colors@npm:1.144.3":
   version: 1.144.3
   resolution: "@tamagui/colors@npm:1.144.3"
   checksum: 10c0/af9d0e4f9be1debcb6206b405706855249f399dbff5c12127f1e5cd355b3931cf49b4b01659019fb926eb2d307bc7317fd6e17ba40a5f39e4f988af9633124d2
+  languageName: node
+  linkType: hard
+
+"@tamagui/colors@npm:^1.144.4":
+  version: 1.144.4
+  resolution: "@tamagui/colors@npm:1.144.4"
+  checksum: 10c0/82bd96734504f07afffc63c32f2a649ade34a4cde35272ed758e274767bd3535bda252e558300678c556bc4696d5f0f0bd750c22a81fe8dd43f12c84ef3619b0
   languageName: node
   linkType: hard
 
